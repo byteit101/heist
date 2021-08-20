@@ -281,8 +281,14 @@ end
 
 # Casts a number to a string
 define('number->string') do |number, radix|
-  number.to_s(radix || 10)
-
+  radix ||= 10
+  if radix == 10
+    number.to_s
+  elsif number.to_i != number
+    raise "FIXME: number->string doesn't support radix argument for non-integers (primitives.rb)"
+  else
+    number.to_s(radix)
+  end
 end
 # Casts a string to a number
 define('string->number') do |string, radix|
